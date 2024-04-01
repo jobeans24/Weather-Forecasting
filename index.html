@@ -7,7 +7,6 @@
     <title>Weather Forecasting</title>
     <link rel="stylesheet" type="text/css" href="./assets/css/style.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    
     <script src="https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}"></script>
 </head>
 <body>
@@ -25,19 +24,19 @@
             </div>
             <div class="col-9">
                 <!-- Rest of the content -->
-                <div class="weather-box" style="font-size: larger">
+                <div class="weather-box" style="font-size: larger; width: 100%;">
                     <div class="current-weather-box">
-                            <h2>Weather Details</h2>
-                            <div class="location">City Name: </div>
-                            <div class="date">Date: </div>
-                            <div class="weather-icon"></div>
-                            <div class="temperature">Temperature: </div>
-                            <div class="humidity">Humidity: </div>
-                            <div class="wind">Wind Speed: </div>
+                        <h2>Weather Details</h2>
+                        <div class="location">City Name: </div>
+                        <div class="date">Date: </div>
+                        <div class="weather-icon"></div>
+                        <div class="temperature">Temperature: </div>
+                        <div class="humidity">Humidity: </div>
+                        <div class="wind">Wind Speed: </div>
                     </div>
-            </div>
+                <div class="fiveweather-box">
                     <div class="forecast-box">
-                        <h2>5-Day Forecast</h2>
+                        <h2 style="display: block">5-Day Forecast</h2>
                         <div class="forecast-day">
                             <div class="forecast-date">Date: </div>
                             <div class="forecast-weather-icon"></div>
@@ -73,7 +72,9 @@
                             <div class="forecast-humidity">Humidity: </div>
                             <div class="forecast-wind">Wind Speed: </div>
                         </div>
-                    
+                    </div>
+                </div>
+                </div>
             </div>
         </div>
     </div>
@@ -83,4 +84,4 @@
     <p>Developed by: <a>🌱Josie Zobel🌱</a></p>
 </footer>
 </html>
-
+            

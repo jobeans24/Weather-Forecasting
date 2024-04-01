@@ -1,3 +1,15 @@
+let cities = [];
+
+function storeCity(cityName) {
+    let cities = localStorage.getItem('cities');
+    if (cities) {
+        cities = JSON.parse(cities);
+    } else {
+        cities = [];
+    }
+    cities.push(cityName);
+    localStorage.setItem('cities', JSON.stringify(cities));
+}
 // this function is called when the search button is clicked
 function searchButtonClicked() {
     var searchInput = document.getElementById('searchInput');
@@ -69,9 +81,8 @@ function displayWeatherData(weatherData) {
 }
 
 function getWeatherDataForFiveDays(cityName) {
-    const apiKey = '';
+    const apiKey = 'YOUR_API_KEY';
     const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}`;
-
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
@@ -95,19 +106,9 @@ function getWeatherDataForFiveDays(cityName) {
         });
 }
 
-function searchCity() {
-    const searchValue = window.location.pathname.split('/').pop();
-    getWeatherDataForFiveDays(searchValue);
-}
+function searchCity() { // search for a city
+    const searchValue = window.location.pathname.split('/').pop(); // get the search value from the URL
+    getWeatherDataForFiveDays(searchValue); // get the weather data for the next five days
+}     
 
-function storeCity(cityName) {
-    let cities = localStorage.getItem('cities');
-    if (cities) {
-        cities = JSON.parse(cities);
-    } else {
-        cities = [];
-    }
-    cities.push(cityName);
-    localStorage.setItem('cities', JSON.stringify(cities));
-}
 
