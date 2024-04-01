@@ -2,11 +2,29 @@
 <html>
 <head>
     <title>Weather Forecasting</title>
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
+    
    
 </head>
 <body>
     <h1>Weather Forecasting</h1>
-    <button onclick="getCoordinates()">Get Coordinates</button>
+    <div class="container">
+        <div class="search-box">
+            <input type="text" class="search-bar" placeholder="Search for a city...">
+        </div>
+        <div class="weather-box">
+            <div class="location">City, Country</div>
+            <div class="date">Date</div>
+            <div class="weather">Weather</div>
+            <div class="temperature">Temperature</div>
+            <div class="weather-icon">Icon</div>
+            <div class="humidity">Humidity</div>
+            <div class="wind">Wind Speed</div>
+        </div>
+    </div>
+    <script src="./assets/js/jquery.min.js"></script>
+    <script src="./assets/js/script.js"></script>
 </body>
+<footer>
+    <p>Developed by: <a>🌱Josie Zobel🌱</a>
+</footer>
 </html>
