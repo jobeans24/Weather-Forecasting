@@ -1,82 +1,86 @@
 let cities = [];
 
 function storeCity(cityName) {
-    let cities = localStorage.getItem('cities');
-    if (cities) {
-        cities = JSON.parse(cities);
-    } else {
-        cities = [];
-    }
     cities.push(cityName);
     localStorage.setItem('cities', JSON.stringify(cities));
+    displayCities();
+
 }
-// this function is called when the search button is clicked
+
 function searchButtonClicked() {
-    var searchInput = document.getElementById('searchInput');
-    var searchValue = searchInput.value;
-    if (searchValue) {
-        window.location.href = '/search/' + searchValue; // redirect to the search page
-        storeCity(searchValue); // store the city in local storage
-    }
-    else {
-        alert('Please enter a search term'); // show an alert if the search input is empty
-    }
+    const searchInput = document.getElementById('searchInput');
+    const cityName = searchInput.value;
+    storeCity(cityName);
+    getWeatherDataForFiveDays(cityName);
+    searchInput.value = '';
+
 }
-// this function is called when the enter key is pressed in the search input
+
 function searchInputKeyPressed(event) {
     if (event.key === 'Enter') {
         searchButtonClicked();
     }
 }
 
-// this function is called when the page is loaded
 function displayCities() {
-    let cities = localStorage.getItem('cities'); // get the cities from local storage
-    if (cities) {
-        cities = JSON.parse(cities);
-        const citiesList = document.getElementById('citiesList'); // get the cities list element
-        citiesList.innerHTML = '';
-        cities.forEach((city) => {
-            const cityElement = document.createElement('li'); // create a list item for each city
-            cityElement.innerHTML = city;
-            citiesList.appendChild(cityElement);
-        });
-    }
+    const citiesList = document.getElementById('citiesList');
+    citiesList.innerHTML = '';
+
+    cities.forEach(city => {
+        const listItem = document.createElement('li');
+        listItem.textContent = city;
+        citiesList.appendChild(listItem);
+    });
+    
 }
 
-// this function is called when the page is loaded
-function getPresentAndNextFourDays() { // get the present day and the next four days
-    const presentDay = new Date().toLocaleDateString(); // get the present day
-    const nextFourDays = []; // get the next four days
+function getPresentAndNextFourDays() {
+    const presentDate = new Date().toLocaleDateString();
+    const nextFourDays = [];
+
     for (let i = 1; i <= 4; i++) {
-        const nextDay = new Date();
-        nextDay.setDate(nextDay.getDate() + i);
-        nextFourDays.push(nextDay.toLocaleDateString());
+        const date = new Date();
+        date.setDate(date.getDate() + i);
+        nextFourDays.push(date.toLocaleDateString());
     }
-    return { presentDay, nextFourDays };
-}
 
+    return { presentDate, nextFourDays };
+}
 
 function displayWeatherData(weatherData) {
-    const weatherBox = document.getElementById('weather-box');
-    weatherBox.innerHTML = '';
+    const weatherContainer = document.getElementById('weatherContainer');
+    weatherContainer.innerHTML = '';
 
-    weatherData.forEach((data) => {
-        const { city, date, weatherIcon, temperature, windSpeed, humidity } = data;
+    weatherData.forEach(data => {
+        const weatherCard = document.createElement('div');
+        weatherCard.classList.add('weather-card');
 
-        const weatherInfo = document.createElement('div');
-        weatherInfo.style.backgroundColor = 'blue';
-        weatherInfo.style.color = 'white';
-        weatherInfo.innerHTML = `
-            <p>City: ${city}</p> 
-            <p>Date: ${date}</p>
-            <img src="http://openweathermap.org/img/w/${weatherIcon}.png" alt="Weather Icon">
-            <p>Temperature: ${temperature}°C</p>
-            <p>Wind Speed: ${windSpeed} m/s</p>
-            <p>Humidity: ${humidity}%</p>
-        `;
+        const cityElement = document.createElement('h2');
+        cityElement.textContent = data.city;
 
-        weatherBox.appendChild(weatherInfo);
+        const dateElement = document.createElement('p');
+        dateElement.textContent = data.date;
+
+        const weatherIconElement = document.createElement('img');
+        weatherIconElement.src = `https://openweathermap.org/img/wn/${data.weatherIcon}.png`;
+
+        const temperatureElement = document.createElement('p');
+        temperatureElement.textContent = `Temperature: ${data.temperature}°C`;
+
+        const windSpeedElement = document.createElement('p');
+        windSpeedElement.textContent = `Wind Speed: ${data.windSpeed} m/s`;
+
+        const humidityElement = document.createElement('p');
+        humidityElement.textContent = `Humidity: ${data.humidity}%`;
+
+        weatherCard.appendChild(cityElement);
+        weatherCard.appendChild(dateElement);
+        weatherCard.appendChild(weatherIconElement);
+        weatherCard.appendChild(temperatureElement);
+        weatherCard.appendChild(windSpeedElement);
+        weatherCard.appendChild(humidityElement);
+
+        weatherContainer.appendChild(weatherCard);
     });
 }
 
@@ -106,9 +110,18 @@ function getWeatherDataForFiveDays(cityName) {
         });
 }
 
-function searchCity() { // search for a city
-    const searchValue = window.location.pathname.split('/').pop(); // get the search value from the URL
-    getWeatherDataForFiveDays(searchValue); // get the weather data for the next five days
-}     
+function searchCity() {
+    const searchValue = window.location.pathname.split('/').pop();
+    getWeatherDataForFiveDays(searchValue);
+}
 
+// create event listeners
+document.getElementById('searchButton').addEventListener('click', searchButtonClicked);
+document.getElementById('searchInput').addEventListener('keypress', searchInputKeyPressed);
+
+
+// Call functions on page load
+displayCities();
+getPresentAndNextFourDays();
+searchCity();
 
