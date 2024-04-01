@@ -182,7 +182,7 @@ function searchCity() {
 }
 
 // create event listeners
-document.getElementById('search-button').addEventListener('click', searchButtonClicked);
+document.getElementById('searchButton').addEventListener('click', searchButtonClicked);
 document.getElementById('searchInput').addEventListener('keypress', searchInputKeyPressed);
 
 
