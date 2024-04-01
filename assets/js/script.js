@@ -1,39 +1,41 @@
+// this function is called when the search button is clicked
 function searchButtonClicked() {
     var searchInput = document.getElementById('searchInput');
     var searchValue = searchInput.value;
     if (searchValue) {
-        window.location.href = '/search/' + searchValue;
-        storeCity(searchValue);
+        window.location.href = '/search/' + searchValue; // redirect to the search page
+        storeCity(searchValue); // store the city in local storage
     }
     else {
-        alert('Please enter a search term');
+        alert('Please enter a search term'); // show an alert if the search input is empty
     }
 }
-
+// this function is called when the enter key is pressed in the search input
 function searchInputKeyPressed(event) {
     if (event.key === 'Enter') {
         searchButtonClicked();
     }
 }
 
+// this function is called when the page is loaded
 function displayCities() {
-    let cities = localStorage.getItem('cities');
+    let cities = localStorage.getItem('cities'); // get the cities from local storage
     if (cities) {
         cities = JSON.parse(cities);
-        const citiesList = document.getElementById('citiesList');
+        const citiesList = document.getElementById('citiesList'); // get the cities list element
         citiesList.innerHTML = '';
         cities.forEach((city) => {
-            const cityElement = document.createElement('li');
+            const cityElement = document.createElement('li'); // create a list item for each city
             cityElement.innerHTML = city;
             citiesList.appendChild(cityElement);
         });
     }
 }
 
-
-function getPresentAndNextFourDays() {
-    const presentDay = new Date().toLocaleDateString();
-    const nextFourDays = [];
+// this function is called when the page is loaded
+function getPresentAndNextFourDays() { // get the present day and the next four days
+    const presentDay = new Date().toLocaleDateString(); // get the present day
+    const nextFourDays = []; // get the next four days
     for (let i = 1; i <= 4; i++) {
         const nextDay = new Date();
         nextDay.setDate(nextDay.getDate() + i);
@@ -41,6 +43,7 @@ function getPresentAndNextFourDays() {
     }
     return { presentDay, nextFourDays };
 }
+
 
 function displayWeatherData(weatherData) {
     const weatherBox = document.getElementById('weather-box');
@@ -92,6 +95,10 @@ function getWeatherDataForFiveDays(cityName) {
         });
 }
 
+function searchCity() {
+    const searchValue = window.location.pathname.split('/').pop();
+    getWeatherDataForFiveDays(searchValue);
+}
 
 function storeCity(cityName) {
     let cities = localStorage.getItem('cities');
@@ -103,3 +110,4 @@ function storeCity(cityName) {
     cities.push(cityName);
     localStorage.setItem('cities', JSON.stringify(cities));
 }
+
