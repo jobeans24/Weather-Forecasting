@@ -81,7 +81,7 @@ function displayWeatherData(weatherData) {
 }
 
 function getWeatherDataForFiveDays(cityName) {
-    const apiKey = 'YOUR_API_KEY';
+    const apiKey = '69ce3649bde3cf3c056b602967f1fe88';
     const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}`;
     fetch(apiUrl)
         .then(response => response.json())
