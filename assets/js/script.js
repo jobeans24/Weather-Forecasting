@@ -16,38 +16,82 @@ function searchInputKeyPressed(event) {
     }
 }
 
-function getWeatherData(cityName) {
+function displayCities() {
+    let cities = localStorage.getItem('cities');
+    if (cities) {
+        cities = JSON.parse(cities);
+        const citiesList = document.getElementById('citiesList');
+        citiesList.innerHTML = '';
+        cities.forEach((city) => {
+            const cityElement = document.createElement('li');
+            cityElement.innerHTML = city;
+            citiesList.appendChild(cityElement);
+        });
+    }
+}
+
+
+function getPresentAndNextFourDays() {
+    const presentDay = new Date().toLocaleDateString();
+    const nextFourDays = [];
+    for (let i = 1; i <= 4; i++) {
+        const nextDay = new Date();
+        nextDay.setDate(nextDay.getDate() + i);
+        nextFourDays.push(nextDay.toLocaleDateString());
+    }
+    return { presentDay, nextFourDays };
+}
+
+function displayWeatherData(weatherData) {
+    const weatherBox = document.getElementById('weather-box');
+    weatherBox.innerHTML = '';
+
+    weatherData.forEach((data) => {
+        const { city, date, weatherIcon, temperature, windSpeed, humidity } = data;
+
+        const weatherInfo = document.createElement('div');
+        weatherInfo.style.backgroundColor = 'blue';
+        weatherInfo.style.color = 'white';
+        weatherInfo.innerHTML = `
+            <p>City: ${city}</p> 
+            <p>Date: ${date}</p>
+            <img src="http://openweathermap.org/img/w/${weatherIcon}.png" alt="Weather Icon">
+            <p>Temperature: ${temperature}°C</p>
+            <p>Wind Speed: ${windSpeed} m/s</p>
+            <p>Humidity: ${humidity}%</p>
+        `;
+
+        weatherBox.appendChild(weatherInfo);
+    });
+}
+
+function getWeatherDataForFiveDays(cityName) {
     const apiKey = '';
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`;
+    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}`;
 
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
-            const city = data.name;
-            const date = new Date(data.dt * 1000).toLocaleDateString();
-            const weatherIcon = data.weather[0].icon;
-            const temperature = data.main.temp;
-            const windSpeed = data.wind.speed;
-            const humidity = data.main.humidity;
+            const weatherData = [];
 
-            const weatherInfo = document.createElement('div');
-            weatherInfo.style.backgroundColor = 'blue';
-            weatherInfo.style.color = 'white';
-            weatherInfo.innerHTML = `
-                <p>City: ${city}</p> 
-                <p>Date: ${date}</p>
-                <img src="http://openweathermap.org/img/w/${weatherIcon}.png" alt="Weather Icon">
-                <p>Temperature: ${temperature}°C</p>
-                <p>Wind Speed: ${windSpeed} m/s</p>
-                <p>Humidity: ${humidity}%</p>
-            `;
+            for (let i = 0; i < data.list.length; i += 8) {
+                const city = data.city.name;
+                const date = new Date(data.list[i].dt * 1000).toLocaleDateString();
+                const weatherIcon = data.list[i].weather[0].icon;
+                const temperature = data.list[i].main.temp;
+                const windSpeed = data.list[i].wind.speed;
+                const humidity = data.list[i].main.humidity;
 
-            document.body.appendChild(weatherInfo);
+                weatherData.push({ city, date, weatherIcon, temperature, windSpeed, humidity });
+            }
+
+            displayWeatherData(weatherData);
         })
         .catch(error => {
             console.error('Error:', error);
         });
 }
+
 
 function storeCity(cityName) {
     let cities = localStorage.getItem('cities');

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weather Forecasting</title>
     <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
-<script src="https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}"></script>
-    
-   
+    <script src="https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}"></script>
 </head>
 <body>
     <h1>Weather Forecasting</h1>
@@ -15,17 +15,16 @@
             <button class="search-button">Search</button>
         </div>
         <div class="weather-box">
-            <div class="location">City, Country</div>
-            <div class="date">Date</div>
-            <div class="weather">Weather</div>
-            <div class="temperature">Temperature</div>
-            <div class="weather-icon">Icon</div>
-            <div class="humidity">Humidity</div>
-            <div class="wind">Wind Speed</div>
+            <h2>Weather Details</h2>
+            <div class="location">City Name: </div>
+            <div class="date">Date: </div>
+            <div class="weather">Weather:</div>
+            <div class="temperature">Temperature: </div>
+            <div class="weather-icon">Icon: </div>
+            <div class="humidity">Humidity </div>
+            <div class="wind">Wind Speed </div>
         </div>
     </div>
-  
-    
     <script src="./assets/js/script.js"></script>
 </body>
 <footer>
