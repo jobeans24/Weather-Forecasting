@@ -1,8 +1,9 @@
 let cities = [];
 
-function storeCity(cityName) {
-    cities.push(cityName);
-    localStorage.setItem('cities', JSON.stringify(cities));
+// function to store city in local storage
+function storeCity(cityName) { 
+    cities.push(cityName); 
+    localStorage.setItem('cities', JSON.stringify(cities)); 
     displayCities();
 
 }
@@ -31,8 +32,25 @@ function displayCities() {
         listItem.textContent = city;
         citiesList.appendChild(listItem);
     });
-    
+
 }
+
+
+function getLatitudeAndLongitude(cityName) {
+    const apiKey = '69ce3649bde3cf3c056b602967f1fe88';
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`;
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            const latitude = data.coord.lat;
+            const longitude = data.coord.lon;
+            console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
 
 function getPresentAndNextFourDays() {
     const presentDate = new Date().toLocaleDateString();
@@ -47,16 +65,17 @@ function getPresentAndNextFourDays() {
     return { presentDate, nextFourDays };
 }
 
-function displayWeatherData(weatherData) {
-    const weatherContainer = document.getElementById('weatherContainer');
-    weatherContainer.innerHTML = '';
+const temperatureInFahrenheit = (temperature) => {
+    return (temperature * 9) / 5 + 32;
+};
 
-    weatherData.forEach(data => {
-        const weatherCard = document.createElement('div');
-        weatherCard.classList.add('weather-card');
+function displayFiveDayForecast(fiveDayData) {
+    const forecastContainer = document.getElementById('forecastContainer');
+    forecastContainer.innerHTML = '';
 
-        const cityElement = document.createElement('h2');
-        cityElement.textContent = data.city;
+    fiveDayData.forEach(data => {
+        const forecastCard = document.createElement('div');
+        forecastCard.classList.add('forecast-card');
 
         const dateElement = document.createElement('p');
         dateElement.textContent = data.date;
@@ -65,7 +84,7 @@ function displayWeatherData(weatherData) {
         weatherIconElement.src = `https://openweathermap.org/img/wn/${data.weatherIcon}.png`;
 
         const temperatureElement = document.createElement('p');
-        temperatureElement.textContent = `Temperature: ${data.temperature}°C`;
+        temperatureElement.textContent = `Temperature: ${temperatureInFahrenheit(data.temperature).toFixed(2)}°F`;
 
         const windSpeedElement = document.createElement('p');
         windSpeedElement.textContent = `Wind Speed: ${data.windSpeed} m/s`;
@@ -73,15 +92,56 @@ function displayWeatherData(weatherData) {
         const humidityElement = document.createElement('p');
         humidityElement.textContent = `Humidity: ${data.humidity}%`;
 
-        weatherCard.appendChild(cityElement);
-        weatherCard.appendChild(dateElement);
-        weatherCard.appendChild(weatherIconElement);
-        weatherCard.appendChild(temperatureElement);
-        weatherCard.appendChild(windSpeedElement);
-        weatherCard.appendChild(humidityElement);
+        forecastCard.appendChild(dateElement);
+        forecastCard.appendChild(weatherIconElement);
+        forecastCard.appendChild(temperatureElement);
+        forecastCard.appendChild(windSpeedElement);
+        forecastCard.appendChild(humidityElement);
 
-        weatherContainer.appendChild(weatherCard);
+        forecastContainer.appendChild(forecastCard);
     });
+
+    return forecastContainer;
+}
+
+function displayWeatherData(weatherData) {
+    const weatherContainer = document.getElementById('weatherContainer');
+    weatherContainer.innerHTML = '';
+
+    const currentWeatherData = weatherData[0];
+    const fiveDayForecastData = weatherData.slice(1);
+
+    const currentWeatherCard = document.createElement('div');
+    currentWeatherCard.classList.add('weather-card');
+
+    const cityElement = document.createElement('h2');
+    cityElement.textContent = currentWeatherData.city;
+
+    const dateElement = document.createElement('p');
+    dateElement.textContent = currentWeatherData.date;
+
+    const weatherIconElement = document.createElement('img');
+    weatherIconElement.src = `https://openweathermap.org/img/wn/${currentWeatherData.weatherIcon}.png`;
+
+    const temperatureElement = document.createElement('p');
+    temperatureElement.textContent = `Temperature: ${temperatureInFahrenheit(currentWeatherData.temperature).toFixed(2)}°F`;
+
+    const windSpeedElement = document.createElement('p');
+    windSpeedElement.textContent = `Wind Speed: ${currentWeatherData.windSpeed} m/s`;
+
+    const humidityElement = document.createElement('p');
+    humidityElement.textContent = `Humidity: ${currentWeatherData.humidity}%`;
+
+    currentWeatherCard.appendChild(cityElement);
+    currentWeatherCard.appendChild(dateElement);
+    currentWeatherCard.appendChild(weatherIconElement);
+    currentWeatherCard.appendChild(temperatureElement);
+    currentWeatherCard.appendChild(windSpeedElement);
+    currentWeatherCard.appendChild(humidityElement);
+
+    weatherContainer.appendChild(currentWeatherCard);
+
+    displayFiveDayForecast(fiveDayForecastData);
 }
 
 function getWeatherDataForFiveDays(cityName) {
@@ -108,15 +168,21 @@ function getWeatherDataForFiveDays(cityName) {
         .catch(error => {
             console.error('Error:', error);
         });
+
 }
 
+
+
 function searchCity() {
-    const searchValue = window.location.pathname.split('/').pop();
-    getWeatherDataForFiveDays(searchValue);
+    const storedCities = localStorage.getItem('cities');
+    if (storedCities) {
+        cities = JSON.parse(storedCities);
+    }
+    return cities;
 }
 
 // create event listeners
-document.getElementById('searchButton').addEventListener('click', searchButtonClicked);
+document.getElementById('search-button').addEventListener('click', searchButtonClicked);
 document.getElementById('searchInput').addEventListener('keypress', searchInputKeyPressed);
 
 

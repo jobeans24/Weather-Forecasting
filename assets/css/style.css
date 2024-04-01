@@ -27,7 +27,7 @@ h1 {
     display: flex;
     flex-wrap: wrap;
     justify-content: left;
-    float: left;
+    float: right;
     margin: 10px;
     padding: 10px;
     border-radius: 10px;
@@ -59,23 +59,18 @@ h2 {
     margin-bottom: 10px;
 }
 
-.forecast-day {
-    padding: 10px;
-    margin: 10px;
-    border-radius: 10px;
-    display: inline-block;
-    background-color: navy;
-    color: white;
-}
-
-.fiveweather-box {
+.forecas-card {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    float: left;
-    margin: 10px;
+    float: right;
+    bottom: auto;
+    background-color: navy;
+    color: white;
     padding: 10px;
     border-radius: 10px;
-  
 }
+
+
+
 
