@@ -75,8 +75,28 @@ function getPresentAndNextFourDays() {
 }
 
 const temperatureInFahrenheit = (temperature) => {
-    return (temperature * 9) / 5 + 32; 
+    return (temperature) / 5 + 32; 
 };
+
+function getTemperatureAt1245PM(cityName) {
+    const apiKey = '69ce3649bde3cf3c056b602967f1fe88';
+    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}`;
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            const forecastData = data.list;
+            const temperatureAt1245PM = forecastData.find(forecast => {
+                const forecastTime = new Date(forecast.dt * 1000);
+                return forecastTime.getHours() === 12 && forecastTime.getMinutes() === 45;
+            }).main.temp;
+            console.log(`Temperature at 12:45 PM: ${temperatureInFahrenheit(temperatureAt1245PM).toFixed(2)}°F`);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+
 
 function displayFiveDayForecast(fiveDayData) {
     const forecastContainer = document.getElementById('forecastContainer');
@@ -136,7 +156,7 @@ function displayWeatherData(weatherData) {
     temperatureElement.textContent = `Temperature: ${temperatureInFahrenheit(currentWeatherData.temperature).toFixed(2)}°F`;
 
     const windSpeedElement = document.createElement('p');
-    windSpeedElement.textContent = `Wind Speed: ${currentWeatherData.windSpeed} m/s`;
+    windSpeedElement.textContent = `Wind Speed: ${convertToMilesPerHour(currentWeatherData.windSpeed)} mph`;
 
     const humidityElement = document.createElement('p');
     humidityElement.textContent = `Humidity: ${currentWeatherData.humidity}%`;
@@ -200,4 +220,5 @@ document.getElementById('clearButton').addEventListener('click', clearCities);
 displayCities();
 getPresentAndNextFourDays();
 searchCity();
+
 

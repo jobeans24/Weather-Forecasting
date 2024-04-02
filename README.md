@@ -29,3 +29,5 @@ The webpage will present the user with the following information; city name, dat
 
 ## Images
 
+![alt text](./assets/images/homepage.png)
+![alt text](./assets/images/WeatherForecast.png)
