@@ -23,6 +23,12 @@ function searchInputKeyPressed(event) {
     }
 }
 
+function clearCities() {
+    cities = [];
+    localStorage.setItem('cities', JSON.stringify(cities));
+    displayCities();
+}
+
 function displayCities() {
     const citiesList = document.getElementById('citiesList');
     citiesList.innerHTML = '';
@@ -33,6 +39,9 @@ function displayCities() {
         citiesList.appendChild(listItem);
     });
 
+}
+function convertToMilesPerHour(windSpeed) {
+    return windSpeed * 2.237;
 }
 
 
@@ -66,7 +75,7 @@ function getPresentAndNextFourDays() {
 }
 
 const temperatureInFahrenheit = (temperature) => {
-    return (temperature * 9) / 5 + 32;
+    return (temperature * 9) / 5 + 32; 
 };
 
 function displayFiveDayForecast(fiveDayData) {
@@ -87,7 +96,7 @@ function displayFiveDayForecast(fiveDayData) {
         temperatureElement.textContent = `Temperature: ${temperatureInFahrenheit(data.temperature).toFixed(2)}°F`;
 
         const windSpeedElement = document.createElement('p');
-        windSpeedElement.textContent = `Wind Speed: ${data.windSpeed} m/s`;
+        windSpeedElement.textContent = `Wind Speed: ${convertToMilesPerHour(data.windSpeed)} mph`;
 
         const humidityElement = document.createElement('p');
         humidityElement.textContent = `Humidity: ${data.humidity}%`;
@@ -181,9 +190,10 @@ function searchCity() {
     return cities;
 }
 
-// create event listeners
-
+// create event listener for search button
+document.getElementById('searchButton').addEventListener('click', searchButtonClicked);
 document.getElementById('searchInput').addEventListener('keypress', searchInputKeyPressed);
+document.getElementById('clearButton').addEventListener('click', clearCities);
 
 
 // Call functions on page load

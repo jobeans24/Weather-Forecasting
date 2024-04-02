@@ -28,19 +28,15 @@ h1 {
     flex-wrap: wrap;
     justify-content: left;
     float: right;
-    margin: 10px;
-    padding: 10px;
     border-radius: 10px;
     background-color: lightyellow;
     color: darkblue;
 }
 
 .forecast-box {
-    display: flex;
-    flex-wrap: wrap;
+  
     justify-content: center;
     float: right;
-    bottom: auto;
 
 }
 
@@ -59,16 +55,14 @@ h2 {
     margin-bottom: 10px;
 }
 
-.forecas-card {
-    display: flex;
-    flex-wrap: wrap;
+.forecast-card {
     justify-content: center;
     float: right;
     bottom: auto;
     background-color: navy;
     color: white;
-    padding: 10px;
     border-radius: 10px;
+    padding: 5px;
 }
 
 
