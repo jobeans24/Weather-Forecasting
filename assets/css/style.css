@@ -19,14 +19,15 @@ h1 {
 .container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start;
     float: left;
     padding-left: 0%;
 }
+
 .weather-box {
     display: flex;
     flex-wrap: wrap;
-    justify-content: left;
+    justify-content: flex-start;
     float: right;
     border-radius: 10px;
     background-color: lightyellow;
@@ -34,36 +35,20 @@ h1 {
 }
 
 .forecast-box {
-  
-    justify-content: center;
+    justify-content: flex-start;
     float: right;
-
-}
-
-.search-box {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    float: left;
-    margin: 10px;
-    padding-left: 10px;
-    border-radius: 10px;
-    width: auto;
-
-}
-h2 {
-    margin-bottom: 10px;
 }
 
 .forecast-card {
-    justify-content: center;
-    float: right;
+    justify-content: flex-start;
     bottom: auto;
     background-color: navy;
     color: white;
     border-radius: 10px;
     padding: 5px;
+    float: right;
 }
+
 
 
 
